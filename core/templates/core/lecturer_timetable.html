@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+{% block title %}My Timetable{% endblock %}
+{% block content %}
+<h3>My Timetable</h3>
+{% if tutorials %}
+<div class="card p-3">
+    <table class="table table-sm">
+        <thead><tr><th>Course</th><th>Date</th><th>Time</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+        {% for t in tutorials %}
+            <tr>
+                <td>{{ t.course.course_code }}</td>
+                <td>{{ t.date }}</td>
+                <td>{{ t.start_time|time:"H:i" }} - {{ t.end_time|time:"H:i" }}</td>
+                <td><span class="badge badge-status-{{ t.status }}">{{ t.get_status_display }}</span></td>
+                <td>
+                    {% if t.id in started_ids %}
+                        <a href="{{ t.teams_link }}" target="_blank" class="btn btn-sm btn-outline-primary">Open Teams</a>
+                    {% elif t.status != "cancelled" %}
+                        <a href="{% url 'start_tutorial' t.id %}" class="btn btn-sm btn-primary">Start Tutorial</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="text-muted">No tutorials scheduled.</p>
+{% endif %}
+{% endblock %}

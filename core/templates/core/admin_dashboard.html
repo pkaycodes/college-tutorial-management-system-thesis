@@ -1,0 +1,59 @@
+{% extends "core/base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h3>Administrator Dashboard</h3>
+
+<div class="row mb-4">
+    <div class="col-md-2 mb-2"><div class="card stat-card"><div class="num">{{ total_students }}</div><div class="label">Students</div></div></div>
+    <div class="col-md-2 mb-2"><div class="card stat-card"><div class="num">{{ total_lecturers }}</div><div class="label">Lecturers</div></div></div>
+    <div class="col-md-2 mb-2"><div class="card stat-card"><div class="num">{{ total_courses }}</div><div class="label">Courses</div></div></div>
+    <div class="col-md-2 mb-2"><div class="card stat-card"><div class="num">{{ upcoming_tutorials }}</div><div class="label">Upcoming</div></div></div>
+    <div class="col-md-2 mb-2"><div class="card stat-card"><div class="num">{{ tutorials_active }}</div><div class="label">Active</div></div></div>
+    <div class="col-md-2 mb-2"><div class="card stat-card"><div class="num">{{ tutorials_conducted }}</div><div class="label">Conducted</div></div></div>
+</div>
+<div class="row mb-4">
+    <div class="col-md-3 mb-2"><div class="card stat-card"><div class="num">{{ pending_claims }}</div><div class="label">Pending Claims</div></div></div>
+    <div class="col-md-3 mb-2"><div class="card stat-card"><div class="num">{{ approved_claims }}</div><div class="label">Approved Claims</div></div></div>
+    <div class="col-md-3 mb-2"><div class="card stat-card"><div class="num">{{ rejected_claims }}</div><div class="label">Rejected Claims</div></div></div>
+    <div class="col-md-3 mb-2"><div class="card stat-card"><div class="num">{{ total_complaints }}</div><div class="label">Complaints</div></div></div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card p-3 mb-3">
+            <h6>Upcoming Tutorials</h6>
+            {% if recent_tutorials %}
+                <ul class="list-unstyled mb-0">
+                {% for t in recent_tutorials %}
+                    <li class="mb-1">{{ t.course.course_code }} — {{ t.lecturer.user.get_full_name }} — {{ t.date }} — <span class="badge badge-status-{{ t.status }}">{{ t.get_status_display }}</span></li>
+                {% endfor %}
+                </ul>
+            {% else %}<p class="text-muted mb-0">No tutorials scheduled.</p>{% endif %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3 mb-3">
+            <h6>Recent Claims</h6>
+            {% if recent_claims %}
+                <ul class="list-unstyled mb-0">
+                {% for c in recent_claims %}
+                    <li class="mb-1"><a href="{% url 'admin_claim_detail' c.id %}">{{ c.lecturer.user.get_full_name }} — {{ c.items.count }} sessions — <span class="badge badge-status-{{ c.status }}">{{ c.get_status_display }}</span></a></li>
+                {% endfor %}
+                </ul>
+            {% else %}<p class="text-muted mb-0">You have no claims yet.</p>{% endif %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3 mb-3">
+            <h6>Recent Complaints</h6>
+            {% if recent_complaints %}
+                <ul class="list-unstyled mb-0">
+                {% for c in recent_complaints %}
+                    <li class="mb-1">{{ c.tutorial.course.course_code }} — {{ c.student.user.get_full_name }} — <span class="badge bg-secondary">{{ c.get_status_display }}</span></li>
+                {% endfor %}
+                </ul>
+            {% else %}<p class="text-muted mb-0">No complaints reported.</p>{% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

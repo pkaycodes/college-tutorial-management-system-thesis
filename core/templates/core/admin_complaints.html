@@ -1,0 +1,36 @@
+{% extends "core/base.html" %}
+{% block title %}Complaints{% endblock %}
+{% block content %}
+<h3>Complaints</h3>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">All Statuses</option>
+            {% for val, label in statuses %}<option value="{{ val }}" {% if status_filter == val %}selected{% endif %}>{{ label }}</option>{% endfor %}
+        </select>
+    </div>
+</form>
+
+{% if complaints %}
+<div class="card p-3">
+    <table class="table table-sm">
+        <thead><tr><th>Course</th><th>Student</th><th>Lecturer</th><th>Description</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        {% for c in complaints %}
+            <tr>
+                <td>{{ c.tutorial.course.course_code }}</td>
+                <td>{{ c.student.user.get_full_name }}</td>
+                <td>{{ c.tutorial.lecturer.user.get_full_name }}</td>
+                <td>{{ c.description|truncatewords:10 }}</td>
+                <td><span class="badge bg-secondary">{{ c.get_status_display }}</span></td>
+                <td><a href="{% url 'admin_complaint_detail' c.id %}" class="btn btn-sm btn-outline-primary">View</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="text-muted">No complaints reported.</p>
+{% endif %}
+{% endblock %}

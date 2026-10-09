@@ -1,0 +1,32 @@
+{% extends "core/base.html" %}
+{% block title %}Submit Claim{% endblock %}
+{% block content %}
+<h3>Eligible Tutorials</h3>
+<p class="text-muted">Select the tutorials you want to claim, then submit.</p>
+{% if eligible %}
+<form method="post">
+    {% csrf_token %}
+    <div class="card p-3">
+        <table class="table table-sm align-middle">
+            <thead><tr><th></th><th>Course</th><th>Date</th><th>Duration</th><th>Lecturer Attendance</th><th>Students</th><th>Feedback</th></tr></thead>
+            <tbody>
+            {% for row in eligible %}
+                <tr>
+                    <td><input type="checkbox" class="form-check-input" name="tutorial_ids" value="{{ row.tutorial.id }}"></td>
+                    <td>{{ row.tutorial.course.course_code }}</td>
+                    <td>{{ row.tutorial.date }}</td>
+                    <td>{{ row.tutorial.start_time|time:"H:i" }} - {{ row.tutorial.end_time|time:"H:i" }}</td>
+                    <td>✓</td>
+                    <td>{{ row.attendees }}</td>
+                    <td>✓ ({{ row.feedback_count }})</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary mt-2" style="width: fit-content;">Submit Claim</button>
+    </div>
+</form>
+{% else %}
+<p class="text-muted">You currently have no tutorials eligible for claiming.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% block title %}Complaint Detail{% endblock %}
+{% block content %}
+<h3>Complaint</h3>
+<p><strong>Course:</strong> {{ complaint.tutorial.course.course_code }} — {{ complaint.tutorial.date }}</p>
+<p><strong>Student:</strong> {{ complaint.student.user.get_full_name }}</p>
+<p><strong>Description:</strong> {{ complaint.description }}</p>
+
+<div class="card p-4">
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select">
+                {% for val, label in statuses %}
+                    <option value="{{ val }}" {% if complaint.status == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Administrative Response</label>
+            <textarea name="admin_response" class="form-control" rows="3">{{ complaint.admin_response }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+{% endblock %}

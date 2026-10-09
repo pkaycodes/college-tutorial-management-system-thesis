@@ -1,0 +1,26 @@
+{% extends "core/base.html" %}
+{% block title %}Feedback{% endblock %}
+{% block content %}
+<h3>Feedback for My Tutorials</h3>
+{% if feedback %}
+<div class="card p-3">
+    <table class="table table-sm">
+        <thead><tr><th>Course</th><th>Date</th><th>Student</th><th>Rating</th><th>Comment</th><th>Sentiment</th></tr></thead>
+        <tbody>
+        {% for f in feedback %}
+            <tr>
+                <td>{{ f.tutorial.course.course_code }}</td>
+                <td>{{ f.tutorial.date }}</td>
+                <td>{{ f.student.user.get_full_name }}</td>
+                <td>{{ f.rating }}/5</td>
+                <td>{{ f.comment|default:"—" }}</td>
+                <td><span class="badge bg-{% if f.sentiment == 'positive' %}success{% elif f.sentiment == 'negative' %}danger{% else %}secondary{% endif %}">{{ f.get_sentiment_display }}</span></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="text-muted">No feedback has been submitted for this tutorial.</p>
+{% endif %}
+{% endblock %}

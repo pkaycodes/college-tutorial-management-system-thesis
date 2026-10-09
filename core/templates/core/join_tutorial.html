@@ -1,0 +1,11 @@
+{% extends "core/base.html" %}
+{% block title %}Join Tutorial{% endblock %}
+{% block content %}
+<div class="card p-4">
+    <h4>{{ tutorial.course.course_code }} — {{ tutorial.date }}</h4>
+    <p class="text-muted">Your attendance has been recorded. Click below to open the tutorial in Microsoft Teams.</p>
+    <a href="{{ tutorial.teams_link }}" target="_blank" class="btn btn-primary">Open Microsoft Teams</a>
+    <a href="{% url 'submit_feedback' tutorial.id %}" class="btn btn-outline-secondary mt-2">Leave Feedback When Done</a>
+    <a href="{% url 'student_timetable' %}" class="mt-3">Back to My Timetable</a>
+</div>
+{% endblock %}

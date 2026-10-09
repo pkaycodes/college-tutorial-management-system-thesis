@@ -1,0 +1,23 @@
+{% extends "core/base.html" %}
+{% block title %}Submit Feedback{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h4>Feedback — {{ tutorial.course.course_code }} ({{ tutorial.date }})</h4>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Rating</label>
+                    {{ form.rating }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Comment</label>
+                    {{ form.comment }}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

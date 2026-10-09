@@ -1,0 +1,37 @@
+{% extends "core/base.html" %}
+{% block title %}Lecturer Appraisal{% endblock %}
+{% block content %}
+<h3>AI-Assisted Lecturer Appraisal</h3>
+<p class="text-muted">This is an assistance tool based on available tutorial data. The administrator remains responsible for interpreting the appraisal.</p>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <select name="lecturer" class="form-select form-select-sm" onchange="this.form.submit()">
+            {% for l in lecturers %}
+                <option value="{{ l.id }}" {% if selected_id == l.id %}selected{% endif %}>{{ l.user.get_full_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</form>
+
+{% if report %}
+<div class="card p-4">
+    <h5>{{ report.lecturer.user.get_full_name }}</h5>
+    <div class="row my-3">
+        <div class="col-md-3"><div class="stat-card"><div class="num">{{ report.tutorials_conducted }}</div><div class="label">Tutorials Conducted</div></div></div>
+        <div class="col-md-3"><div class="stat-card"><div class="num">{{ report.avg_rating|default:"—" }}</div><div class="label">Average Rating</div></div></div>
+        <div class="col-md-3"><div class="stat-card"><div class="num">{{ report.avg_attendance_pct }}%</div><div class="label">Avg Student Attendance</div></div></div>
+        <div class="col-md-3"><div class="stat-card"><div class="num">{{ report.resolved }}/{{ report.complaints }}</div><div class="label">Complaints Resolved</div></div></div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-4"><div class="stat-card"><div class="num text-success">{{ report.positive_pct }}%</div><div class="label">Positive Feedback</div></div></div>
+        <div class="col-md-4"><div class="stat-card"><div class="num text-secondary">{{ report.neutral_pct }}%</div><div class="label">Neutral Feedback</div></div></div>
+        <div class="col-md-4"><div class="stat-card"><div class="num text-danger">{{ report.negative_pct }}%</div><div class="label">Negative Feedback</div></div></div>
+    </div>
+    <h6>AI-Generated Summary</h6>
+    <p class="mb-0">{{ report.summary }}</p>
+</div>
+{% else %}
+<p class="text-muted">No lecturers found.</p>
+{% endif %}
+{% endblock %}

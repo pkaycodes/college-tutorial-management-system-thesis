@@ -1,0 +1,49 @@
+{% extends "core/base.html" %}
+{% block title %}Claim #{{ claim.id }}{% endblock %}
+{% block content %}
+<h3>Claim #{{ claim.id }}</h3>
+<p><strong>Lecturer:</strong> {{ claim.lecturer.user.get_full_name }} ({{ claim.lecturer.lecturer_id }})</p>
+<p><strong>Submitted:</strong> {{ claim.submitted_at|date:"d M Y, H:i" }}</p>
+<p><strong>Status:</strong> <span class="badge badge-status-{{ claim.status }}">{{ claim.get_status_display }}</span></p>
+{% if claim.rejection_reason %}<p><strong>Rejection Reason:</strong> {{ claim.rejection_reason }}</p>{% endif %}
+
+<div class="card p-3 mb-3">
+    <h6>Tutorials Being Claimed</h6>
+    <table class="table table-sm">
+        <thead><tr><th>Course</th><th>Date</th><th>Lecturer Attendance</th><th>Student Attendance</th><th>Feedback</th></tr></thead>
+        <tbody>
+        {% for item in items_detail %}
+            <tr>
+                <td>{{ item.tutorial.course.course_code }}</td>
+                <td>{{ item.tutorial.date }}</td>
+                <td>{% if item.lecturer_attended %}Yes{% else %}No{% endif %}</td>
+                <td>{{ item.student_count }}</td>
+                <td>{{ item.feedback_count }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if claim.status == "pending" %}
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="approve">
+            <button type="submit" class="btn btn-success w-100">Approve Claim</button>
+        </form>
+    </div>
+    <div class="col-md-8">
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="reject">
+            <div class="input-group">
+                {{ reject_form.rejection_reason }}
+                <button type="submit" class="btn btn-danger">Reject Claim</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

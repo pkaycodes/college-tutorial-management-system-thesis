@@ -1,0 +1,65 @@
+{% extends "core/base.html" %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+<h3>Reports</h3>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <div class="card p-3">
+            <h6>Tutorial Report</h6>
+            <table class="table table-sm mb-0">
+                <tr><td>Scheduled</td><td>{{ tutorials_scheduled }}</td></tr>
+                <tr><td>Completed</td><td>{{ tutorials_completed }}</td></tr>
+                <tr><td>Cancelled</td><td>{{ tutorials_cancelled }}</td></tr>
+            </table>
+            <hr>
+            <small class="text-muted">By Course</small>
+            <table class="table table-sm">
+                {% for row in by_course %}<tr><td>{{ row.course__course_code }}</td><td>{{ row.count }}</td></tr>{% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="card p-3">
+            <h6>Attendance Report</h6>
+            <table class="table table-sm mb-0">
+                <tr><td>Student Attendance Records</td><td>{{ student_attendance_total }}</td></tr>
+                <tr><td>Lecturer Attendance Records</td><td>{{ lecturer_attendance_total }}</td></tr>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="card p-3">
+            <h6>Feedback Report</h6>
+            <table class="table table-sm mb-0">
+                <tr><td>Responses</td><td>{{ feedback_total }}</td></tr>
+                <tr><td>Average Rating</td><td>{{ avg_rating|floatformat:1|default:"—" }}</td></tr>
+                <tr><td>Positive</td><td>{{ positive }}</td></tr>
+                <tr><td>Neutral</td><td>{{ neutral }}</td></tr>
+                <tr><td>Negative</td><td>{{ negative }}</td></tr>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="card p-3">
+            <h6>Complaint Report</h6>
+            <table class="table table-sm mb-0">
+                <tr><td>Total</td><td>{{ complaints_total }}</td></tr>
+                <tr><td>Open</td><td>{{ complaints_open }}</td></tr>
+                <tr><td>Resolved</td><td>{{ complaints_resolved }}</td></tr>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="card p-3">
+            <h6>Claims Report</h6>
+            <table class="table table-sm mb-0">
+                <tr><td>Pending</td><td>{{ claims_pending }}</td></tr>
+                <tr><td>Approved</td><td>{{ claims_approved }}</td></tr>
+                <tr><td>Rejected</td><td>{{ claims_rejected }}</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+<a href="{% url 'admin_appraisal' %}" class="btn btn-outline-primary">View Lecturer Appraisal Report</a>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "core/base.html" %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+<h3>Welcome, {{ user.get_full_name }}</h3>
+<p class="text-muted">You are enrolled in {{ course_count }} course{{ course_count|pluralize }}.</p>
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card p-3">
+            <h5>Upcoming Tutorials</h5>
+            {% if upcoming %}
+                <table class="table table-sm mt-2">
+                    <thead><tr><th>Course</th><th>Date</th><th>Time</th><th>Lecturer</th><th>Status</th><th></th></tr></thead>
+                    <tbody>
+                    {% for t in upcoming %}
+                        <tr>
+                            <td>{{ t.course.course_code }}</td>
+                            <td>{{ t.date }}</td>
+                            <td>{{ t.start_time|time:"H:i" }} - {{ t.end_time|time:"H:i" }}</td>
+                            <td>{{ t.lecturer.user.get_full_name }}</td>
+                            <td><span class="badge badge-status-{{ t.status }}">{{ t.get_status_display }}</span></td>
+                            <td><a href="{% url 'join_tutorial' t.id %}" class="btn btn-sm btn-primary">Join Tutorial</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted mb-0">No tutorials scheduled.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3 mb-3">
+            <h6>Pending Feedback</h6>
+            {% if pending_feedback %}
+                <ul class="list-unstyled mb-0">
+                {% for t in pending_feedback %}
+                    <li class="mb-1"><a href="{% url 'submit_feedback' t.id %}">{{ t.course.course_code }} — {{ t.date }}</a></li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted mb-0">No feedback has been submitted for this tutorial.</p>
+            {% endif %}
+        </div>
+        <div class="card p-3">
+            <h6>Recent Complaints</h6>
+            {% if recent_complaints %}
+                <ul class="list-unstyled mb-0">
+                {% for c in recent_complaints %}
+                    <li class="mb-1">{{ c.tutorial.course.course_code }} — <span class="badge bg-secondary">{{ c.get_status_display }}</span></li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted mb-0">No complaints reported.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

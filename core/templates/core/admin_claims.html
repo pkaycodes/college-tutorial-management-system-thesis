@@ -1,0 +1,36 @@
+{% extends "core/base.html" %}
+{% block title %}Claims Management{% endblock %}
+{% block content %}
+<h3>Claims Management</h3>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">All Statuses</option>
+            {% for val, label in statuses %}<option value="{{ val }}" {% if status_filter == val %}selected{% endif %}>{{ label }}</option>{% endfor %}
+        </select>
+    </div>
+</form>
+
+{% if claims %}
+<div class="card p-3">
+    <table class="table table-sm">
+        <thead><tr><th>Claim</th><th>Lecturer</th><th>Sessions</th><th>Submitted</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        {% for claim in claims %}
+            <tr>
+                <td>#{{ claim.id }}</td>
+                <td>{{ claim.lecturer.user.get_full_name }}</td>
+                <td>{{ claim.items.count }}</td>
+                <td>{{ claim.submitted_at|date:"d M Y" }}</td>
+                <td><span class="badge badge-status-{{ claim.status }}">{{ claim.get_status_display }}</span></td>
+                <td><a href="{% url 'admin_claim_detail' claim.id %}" class="btn btn-sm btn-outline-primary">Review</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="text-muted">No claims found.</p>
+{% endif %}
+{% endblock %}

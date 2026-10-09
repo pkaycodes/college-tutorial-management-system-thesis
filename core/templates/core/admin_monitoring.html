@@ -1,0 +1,55 @@
+{% extends "core/base.html" %}
+{% block title %}Monitoring{% endblock %}
+{% block content %}
+<h3>Tutorial Monitoring</h3>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <select name="course" class="form-select form-select-sm">
+            <option value="">All Courses</option>
+            {% for c in courses %}<option value="{{ c.id }}" {% if filters.course == c.id|stringformat:"s" %}selected{% endif %}>{{ c.course_code }}</option>{% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <select name="lecturer" class="form-select form-select-sm">
+            <option value="">All Lecturers</option>
+            {% for l in lecturers %}<option value="{{ l.id }}" {% if filters.lecturer == l.id|stringformat:"s" %}selected{% endif %}>{{ l.user.get_full_name }}</option>{% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <select name="status" class="form-select form-select-sm">
+            <option value="">All Statuses</option>
+            {% for val, label in statuses %}<option value="{{ val }}" {% if filters.status == val %}selected{% endif %}>{{ label }}</option>{% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <input type="date" name="date" value="{{ filters.date }}" class="form-control form-control-sm">
+    </div>
+    <div class="col-auto"><button class="btn btn-sm btn-primary">Filter</button></div>
+</form>
+
+{% if rows %}
+<div class="card p-3">
+    <table class="table table-sm">
+        <thead><tr><th>Course</th><th>Lecturer</th><th>Date</th><th>Time</th><th>Status</th><th>Lecturer Attended</th><th>Students</th><th>Feedback</th><th>Complaints</th></tr></thead>
+        <tbody>
+        {% for row in rows %}
+            <tr>
+                <td>{{ row.tutorial.course.course_code }}</td>
+                <td>{{ row.tutorial.lecturer.user.get_full_name }}</td>
+                <td>{{ row.tutorial.date }}</td>
+                <td>{{ row.tutorial.start_time|time:"H:i" }} - {{ row.tutorial.end_time|time:"H:i" }}</td>
+                <td><span class="badge badge-status-{{ row.tutorial.status }}">{{ row.tutorial.get_status_display }}</span></td>
+                <td>{% if row.lecturer_attended %}Yes{% else %}No{% endif %}</td>
+                <td>{{ row.student_count }}</td>
+                <td>{{ row.feedback_count }}</td>
+                <td>{{ row.complaint_count }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="text-muted">No tutorials match these filters.</p>
+{% endif %}
+{% endblock %}

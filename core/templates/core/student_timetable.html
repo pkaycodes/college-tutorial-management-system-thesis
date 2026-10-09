@@ -1,0 +1,34 @@
+{% extends "core/base.html" %}
+{% block title %}My Timetable{% endblock %}
+{% block content %}
+<h3>My Timetable</h3>
+{% if tutorials %}
+<div class="card p-3">
+    <table class="table table-sm">
+        <thead><tr><th>Course</th><th>Date</th><th>Time</th><th>Lecturer</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for t in tutorials %}
+            <tr>
+                <td>{{ t.course.course_code }}</td>
+                <td>{{ t.date }}</td>
+                <td>{{ t.start_time|time:"H:i" }} - {{ t.end_time|time:"H:i" }}</td>
+                <td>{{ t.lecturer.user.get_full_name }}</td>
+                <td><span class="badge badge-status-{{ t.status }}">{{ t.get_status_display }}</span></td>
+                <td>
+                    {% if t.status != "cancelled" %}
+                        <a href="{% url 'join_tutorial' t.id %}" class="btn btn-sm btn-primary">Join</a>
+                    {% endif %}
+                    {% if t.id in attended_ids %}
+                        <a href="{% url 'submit_feedback' t.id %}" class="btn btn-sm btn-outline-success">Feedback</a>
+                    {% endif %}
+                    <a href="{% url 'submit_complaint' t.id %}" class="btn btn-sm btn-outline-danger">Report Issue</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="text-muted">No tutorials scheduled.</p>
+{% endif %}
+{% endblock %}

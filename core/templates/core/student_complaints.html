@@ -1,0 +1,25 @@
+{% extends "core/base.html" %}
+{% block title %}My Complaints{% endblock %}
+{% block content %}
+<h3>My Complaints</h3>
+{% if complaints %}
+<div class="card p-3">
+    <table class="table table-sm">
+        <thead><tr><th>Course</th><th>Date</th><th>Description</th><th>Status</th><th>Admin Response</th></tr></thead>
+        <tbody>
+        {% for c in complaints %}
+            <tr>
+                <td>{{ c.tutorial.course.course_code }}</td>
+                <td>{{ c.tutorial.date }}</td>
+                <td>{{ c.description }}</td>
+                <td><span class="badge bg-secondary">{{ c.get_status_display }}</span></td>
+                <td>{{ c.admin_response|default:"—" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="text-muted">No complaints reported.</p>
+{% endif %}
+{% endblock %}

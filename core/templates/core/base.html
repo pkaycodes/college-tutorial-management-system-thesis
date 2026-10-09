@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CTMS{% endblock %} | College Tutorial Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <style>
+        :root {
+            --navy: #12264a;
+            --navy-deep: #0b1b36;
+            --gold: #e8b04a;
+            --paper: #f3f5f9;
+            --ink: #1b2433;
+            --muted: #637085;
+            --line: #e1e6ee;
+            --green: #1f8a5b;
+            --red: #c8453b;
+            --orange: #d9822b;
+            --blue: #2f6fd1;
+        }
+        body {
+            font-family: 'DM Sans', system-ui, sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+        }
+        h1, h2, h3, h4, h5 { font-family: 'Fraunces', Georgia, serif; font-weight: 700; color: var(--navy); }
+        h3 { font-size: 1.75rem; margin-bottom: 1.25rem; }
+        h5, h6 { font-weight: 700; }
+        h6 { color: var(--navy); }
+
+        /* Navigation */
+        .app-nav { background: var(--navy-deep); border-bottom: 3px solid var(--gold); }
+        .app-nav .navbar-brand { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.3rem; color: #fff; letter-spacing: .02em; }
+        .app-nav .navbar-brand span { color: var(--gold); }
+        .app-nav .nav-link { color: #c9d3e6; font-weight: 500; border-radius: 6px; padding: .45rem .8rem; }
+        .app-nav .nav-link:hover, .app-nav .nav-link:focus { color: #fff; background: rgba(255,255,255,.08); }
+        .app-nav .navbar-text { color: #c9d3e6 !important; font-size: .9rem; }
+
+        /* Cards */
+        .card { border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 6px 20px rgba(18,38,74,.06); background: #fff; }
+        .stat-card { text-align: left; padding: 1.1rem 1.25rem; border-left: 4px solid var(--gold); }
+        .stat-card .num { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; color: var(--navy); line-height: 1.1; }
+        .stat-card .label { color: var(--muted); font-size: .85rem; margin-top: .2rem; }
+
+        /* Tables */
+        .table { --bs-table-bg: transparent; margin-bottom: 0; }
+        .table thead th { color: var(--muted); font-weight: 500; font-size: .85rem; border-bottom: 2px solid var(--line); }
+        .table td { vertical-align: middle; }
+
+        /* Buttons */
+        .btn-primary { background: var(--navy); border-color: var(--navy); font-weight: 500; }
+        .btn-primary:hover, .btn-primary:focus { background: var(--navy-deep); border-color: var(--navy-deep); }
+        .btn-outline-primary { color: var(--navy); border-color: var(--navy); }
+        .btn-outline-primary:hover { background: var(--navy); border-color: var(--navy); }
+        .btn-gold { background: var(--gold); border-color: var(--gold); color: var(--navy-deep); font-weight: 700; }
+        .btn-gold:hover { background: #f0be63; border-color: #f0be63; color: var(--navy-deep); }
+        .form-control, .form-select { border-radius: 10px; border-color: #cfd7e3; padding: .6rem .8rem; }
+        .form-control:focus, .form-select:focus { border-color: var(--navy); box-shadow: 0 0 0 .2rem rgba(18,38,74,.15); }
+
+        /* Status badges */
+        .badge { font-weight: 500; padding: .4em .7em; border-radius: 999px; }
+        .badge-status-upcoming { background-color: var(--blue); }
+        .badge-status-active { background-color: var(--green); }
+        .badge-status-completed { background-color: #7a8699; }
+        .badge-status-cancelled { background-color: var(--red); }
+        .badge-status-pending { background-color: var(--orange); }
+        .badge-status-approved { background-color: var(--green); }
+        .badge-status-rejected { background-color: var(--red); }
+    </style>
+</head>
+<body>
+{% if user.is_authenticated %}
+<nav class="navbar navbar-expand-lg navbar-dark app-nav mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'dashboard' %}">CTMS<span>.</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-label="Toggle menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav me-auto">
+                {% if user.role == "admin" %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_monitoring' %}">Monitoring</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_claims' %}">Claims</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_complaints' %}">Complaints</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_appraisal' %}">Appraisal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_reports' %}">Reports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/">Manage Data</a></li>
+                {% elif user.role == "lecturer" %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lecturer_dashboard' %}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lecturer_timetable' %}">My Timetable</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lecturer_feedback' %}">Feedback</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lecturer_complaints' %}">Complaints</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'eligible_tutorials' %}">Submit Claim</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'my_claims' %}">My Claims</a></li>
+                {% elif user.role == "student" %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'student_dashboard' %}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'student_timetable' %}">My Timetable</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'student_complaints' %}">My Complaints</a></li>
+                {% endif %}
+            </ul>
+            <span class="navbar-text me-3">{{ user.get_full_name|default:user.username }} ({{ user.get_role_display }})</span>
+            <a href="{% url 'logout' %}" class="btn btn-gold btn-sm">Logout</a>
+        </div>
+    </div>
+</nav>
+{% endif %}
+
+{% block layout %}
+<div class="container pb-5">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+</div>
+{% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{% extends "core/base.html" %}
+{% block title %}My Claims{% endblock %}
+{% block content %}
+<h3>My Claims</h3>
+{% if claims %}
+<div class="card p-3">
+    <table class="table table-sm">
+        <thead><tr><th>Claim</th><th>Sessions</th><th>Submitted</th><th>Status</th><th>Rejection Reason</th></tr></thead>
+        <tbody>
+        {% for claim in claims %}
+            <tr>
+                <td>#{{ claim.id }}</td>
+                <td>{{ claim.items.count }}</td>
+                <td>{{ claim.submitted_at|date:"d M Y" }}</td>
+                <td><span class="badge badge-status-{{ claim.status }}">{{ claim.get_status_display }}</span></td>
+                <td>{{ claim.rejection_reason|default:"—" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="text-muted">You have no claims yet.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "core/base.html" %}
+{% block title %}Sign in{% endblock %}
+
+{% block layout %}
+<style>
+    .login-wrap { min-height: 100vh; display: flex; }
+    .hero {
+        flex: 1.15; position: relative; overflow: hidden;
+        background:
+            radial-gradient(circle at 85% 12%, rgba(232,176,74,.28), transparent 38%),
+            linear-gradient(155deg, var(--navy) 0%, var(--navy-deep) 100%);
+        color: #fff; padding: 4rem 4.5rem; display: flex; flex-direction: column; justify-content: center;
+    }
+    .hero::after {
+        content: ""; position: absolute; right: -140px; bottom: -140px; width: 420px; height: 420px;
+        border: 2px solid rgba(232,176,74,.35); border-radius: 50%;
+    }
+    .hero-abbr {
+        display: inline-block; align-self: flex-start; background: var(--gold); color: var(--navy-deep);
+        font-weight: 700; letter-spacing: .12em; padding: .3rem .9rem; border-radius: 999px; margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+        color: #fff; font-size: clamp(2.6rem, 5.2vw, 4.4rem); line-height: 1.05; max-width: 14ch; margin-bottom: 1.25rem;
+    }
+    .hero p.lead { color: #c9d3e6; max-width: 46ch; font-size: 1.15rem; margin-bottom: 2rem; }
+
+    .roles { position: relative; z-index: 1; max-width: 460px; display: grid; gap: 1.1rem; }
+    .role { border-left: 3px solid var(--gold); padding-left: 1rem; }
+    .role strong { display: block; color: #fff; font-family: 'Fraunces', serif; font-size: 1.15rem; margin-bottom: .15rem; }
+    .role span { color: #c9d3e6; font-size: .98rem; }
+
+    .panel { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2.5rem; background: #fff; }
+    .panel-inner { width: 100%; max-width: 380px; }
+    .panel h2 { font-size: 2rem; margin-bottom: .35rem; }
+    .panel .sub { color: var(--muted); margin-bottom: 1.75rem; }
+    .panel .btn-gold { padding: .75rem; font-size: 1.05rem; }
+
+    @media (max-width: 900px) {
+        .login-wrap { flex-direction: column; }
+        .hero { padding: 2.5rem 1.5rem; }
+        .hero::after { display: none; }
+    }
+</style>
+
+<div class="login-wrap">
+    <section class="hero">
+        <span class="hero-abbr">CTMS</span>
+        <h1>College Tutorial Management System</h1>
+        <p class="lead">Schedule online tutorials, record attendance, collect student feedback and manage lecturer claims in one place.</p>
+
+        <div class="roles">
+            <div class="role">
+                <strong>Students</strong>
+                <span>Join tutorials, give feedback and report issues.</span>
+            </div>
+            <div class="role">
+                <strong>Lecturers</strong>
+                <span>Record attendance and submit claims for tutorials taught.</span>
+            </div>
+            <div class="role">
+                <strong>Administrators</strong>
+                <span>Monitor tutorials and review claims.</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-inner">
+            <h2>Welcome back</h2>
+            <p class="sub">Sign in with your CTMS account.</p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label" for="{{ form.username.id_for_label }}">Username</label>
+                    {{ form.username }}
+                </div>
+                <div class="mb-4">
+                    <label class="form-label" for="{{ form.password.id_for_label }}">Password</label>
+                    {{ form.password }}
+                </div>
+                <button type="submit" class="btn btn-gold w-100">Sign in</button>
+            </form>
+        </div>
+    </section>
+</div>
+{% endblock %}
