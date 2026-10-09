@@ -1,4 +1,4 @@
-# College Tutorial Management System (CTMS)
+College Tutorial Management System (CTMS)
 
 A simple Django web app for managing online tutorials, attendance, student
 feedback, complaints, and lecturer claims — built to the "simple over
@@ -6,7 +6,7 @@ clever" principle: server-rendered pages, one relational database, no
 Microsoft Teams API integration (just a stored meeting link), and a small
 rule-based sentiment classifier instead of a heavy ML pipeline.
 
-## What's here
+ explanation by papakwame, developer
 
 - **Three roles**: Administrator, Lecturer, Student — each gets their own
   dashboard and is restricted server-side (not just hidden buttons) to
@@ -27,7 +27,7 @@ rule-based sentiment classifier instead of a heavy ML pipeline.
   the workflow-specific screens (claims review, monitoring, appraisal,
   reports).
 
-## Project layout
+ Project layout
 
 ```
 ctms/
@@ -46,7 +46,7 @@ ctms/
     └── management/commands/seed_data.py   # demo data
 ```
 
-## Running it locally
+Running it locally
 
 ```bash
 cd ctms
@@ -58,7 +58,7 @@ python manage.py runserver
 
 Then open http://127.0.0.1:8000/ — you'll be redirected to the login page.
 
-### Demo accounts (development only — do not use these in production)
+ Demo accounts (development only — do not use these in production)
 
 | Role      | Username     | Password     |
 |-----------|--------------|--------------|
@@ -71,7 +71,7 @@ Then open http://127.0.0.1:8000/ — you'll be redirected to the login page.
 The admin account also has access to Django's built-in admin site at
 `/admin/` for managing users, courses, and tutorials directly.
 
-## Walking through the core workflow
+ Walking through the core workflow
 
 1. Log in as `admin`, go to **Manage Data** (`/admin/`) to see/add
    students, lecturers, courses, enrollments, and tutorials — the demo
@@ -90,12 +90,8 @@ The admin account also has access to Django's built-in admin site at
    **Approve** or **Reject** (a rejection requires a reason).
 6. The lecturer can see the claim's status and, if rejected, the reason
    under **My Claims**.
-
-## Notes on scope
-
-This intentionally leaves out anything the spec calls out as out-of-scope:
-no Microsoft Teams API integration, no payment processing, no video/audio
-monitoring, no facial recognition, and no multi-stage approval chains.
+ 
+ 
 Secrets (`DJANGO_SECRET_KEY`, `DJANGO_DEBUG`, `DJANGO_ALLOWED_HOSTS`) are
 read from environment variables with safe local-dev defaults — set real
 values before deploying anywhere public.
