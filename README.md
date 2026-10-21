@@ -44,8 +44,9 @@ A tutorial is eligible only when all of the following hold:
 - the tutorial was not cancelled;
 - it is not already part of a pending or approved claim.
 
-The check is done in the query that builds the eligible list, so an ineligible
-tutorial cannot be submitted by crafting a request.
+The check runs for each tutorial when the eligible list is built, and again when
+a claim is submitted, so an ineligible tutorial cannot be added by crafting a
+request.
 
 ### Appraisal
 
@@ -108,7 +109,8 @@ python manage.py runserver
 Then open <http://127.0.0.1:8000/> — you will be redirected to the login page.
 
 `seed_data` creates tutorials in every state (upcoming, active, completed,
-cancelled), including two that are already eligible for a claim.
+cancelled), including two that are ready to claim, one already inside an
+approved claim, and one in a pending claim for review.
 
 ### Demo accounts
 
