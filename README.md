@@ -13,6 +13,8 @@ pipeline.
 > (Express, PostgreSQL, JWT) — useful as a comparison between a monolithic
 > Django design and a split client/server one.
 
+![Administrator dashboard](docs/dashboard.png)
+
 ## What it does
 
 ### Three roles, enforced server-side
