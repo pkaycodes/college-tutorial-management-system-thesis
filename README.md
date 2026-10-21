@@ -95,3 +95,7 @@ The admin account also has access to Django's built-in admin site at
 Secrets (`DJANGO_SECRET_KEY`, `DJANGO_DEBUG`, `DJANGO_ALLOWED_HOSTS`) are
 read from environment variables with safe local-dev defaults — set real
 values before deploying anywhere public.
+
+## Licence
+
+MIT - see [LICENSE](LICENSE).
