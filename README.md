@@ -9,7 +9,7 @@ integration, and a small rule-based sentiment classifier instead of an ML
 pipeline.
 
 > This is the original server-rendered implementation. The same domain was later
-> rebuilt as a JSON API in [**ug-ctms**](https://github.com/pkaycodes/ug-ctms)
+> rebuilt as a JSON API in [**UG CTMS API**](https://github.com/pkaycodes/university-tutorial-claims-api)
 > (Express, PostgreSQL, JWT) — useful as a comparison between a monolithic
 > Django design and a split client/server one.
 
@@ -98,7 +98,8 @@ ctms/
 Requires Python 3.12+ (Django 6 requires it).
 
 ```bash
-cd ctms
+git clone https://github.com/pkaycodes/college-tutorial-management-system-thesis.git
+cd college-tutorial-management-system-thesis
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python manage.py migrate
